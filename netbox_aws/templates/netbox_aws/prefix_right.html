@@ -1,0 +1,19 @@
+{% if object.vpc_set.count > 0 %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>VPCs</strong>
+    </div>
+    <table class="table table-hover panel-body attr-table">
+        {% for vpc in object.vpc_set.all %}
+            <tr>
+                <td>
+                    <a href="{{ vpc.get_absolute_url }}">{{ vpc.name }}</a>
+                </td>
+                <td>
+                    {{ vpc.get_region_display }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}

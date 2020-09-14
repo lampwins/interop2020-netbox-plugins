@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load buttons %}
+{% load custom_links %}
+{% load helpers %}
+{% load static %}
+{% load tz %}
+
+{% block header %}
+    <div class="row noprint">
+        <div class="col-sm-8 col-md-9">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'plugins:netbox_aws:vpc_list' %}">VPCs</a></li>
+                <li>{{ vpc }}</li>
+            </ol>
+        </div>
+        <div class="col-sm-4 col-md-3">
+            <form action="{% url 'plugins:netbox_aws:vpc_list' %}" method="get">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search vpcs" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="fa fa-search" aria-hidden="true"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="pull-right noprint">
+        {% if perms.netbox_aws.change_vpc %}
+            <a href="{% url 'plugins:netbox_aws:vpc_edit' slug=vpc.slug %}" class="btn btn-warning">
+                <span class="fa fa-pencil" aria-hidden="true"></span> Edit
+            </a>
+        {% endif %}
+        {% if perms.netbox_aws.delete_vpc %}
+            <a href="{% url 'plugins:netbox_aws:vpc_delete' slug=vpc.slug %}" class="btn btn-danger">
+                <span class="fa fa-trash" aria-hidden="true"></span> Delete
+            </a>
+        {% endif %}
+    </div>
+    <h1>{% block title %}{{ vpc }}{% endblock %}</h1>
+    {% include 'inc/created_updated.html' with obj=vpc %}
+    <div class="pull-right noprint">
+        {% custom_links vpc %}
+    </div>
+    <ul class="nav nav-tabs">
+        <li role="presentation"{% if not active_tab %} class="active"{% endif %}>
+            <a href="{{ vpc.get_absolute_url }}">vpc</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>VPC</strong>
+            </div>
+            <table class="table table-hover panel-body attr-table">
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        {{ vpc.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Region</td>
+                    <td>
+                        {{ vpc.get_region_display }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Container Prefix</td>
+                    <td>
+                        <a href="{{ vpc.container_prefix.get_absolute_url }}">{{ vpc.container_prefix }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ vpc.description|placeholder }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
