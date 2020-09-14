@@ -12,8 +12,8 @@ menu_items = (
         permissions=['netbox_aws.view_vpc'],
         buttons=(
 
-            # Add a green button which links to the admin view to add a new animal. This
-            # button will appear only if the user has the "add_animal" permission.
+            # Add a green button which links to the admin view to add a new vpc. This
+            # button will appear only if the user has the "add_vpc" permission.
             PluginMenuButton(
                 link='plugins:netbox_aws:vpc_add',
                 title='Add a new VPC',
